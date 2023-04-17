@@ -1,11 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import {
-  Box,
-  Container,
-  TextField,
-  textFieldClasses,
-  Typography,
-} from "@mui/material";
+import { Box, Container, Fade, TextField, Typography } from "@mui/material";
 import botSvg from "./bot.svg";
 
 function App() {
@@ -14,10 +8,10 @@ function App() {
   const [currentQuestion, setCurrentQuestion] = useState<string>("");
   const [questionLog, setQuestionLog] = useState<
     Array<{ type: number; message: string }>
-  >([{ type: 0, message: 'type your question below'}]);
+  >([{ type: 0, message: "type your question below" }]);
 
   // HANDLERS
-  const getInitialLoadData = useCallback(async (): Promise<void> => {
+  const getInitialLoadData = async (): Promise<void> => {
     try {
       const response: { message: string } = await fetch(
         "http://localhost:8000/vodacom/prompt"
@@ -26,7 +20,7 @@ function App() {
     } catch (err) {
       console.log(err);
     }
-  }, []);
+  };
 
   const askQuestion = async (): Promise<void> => {
     try {
@@ -41,18 +35,18 @@ function App() {
           },
         }
       ).then((res) => res.json());
-      setCurrentQuestion("");
       setResponse(response, question);
     } catch (err) {
       console.log(err);
     }
   };
 
-  const setQuestion = (): Array<{ type: number, message: string }> => {
+  const setQuestion = (): Array<{ type: number; message: string }> => {
     const newLog = new Array();
     if (questionLog) newLog.push(...questionLog);
     newLog.push({ type: 1, message: currentQuestion });
     setQuestionLog(newLog);
+    setCurrentQuestion("");
     return newLog;
   };
 
@@ -68,32 +62,37 @@ function App() {
     getInitialLoadData();
   }, []);
 
+  useEffect(() => {});
+
   return (
     <Container
+      className="example"
       disableGutters
       maxWidth="sm"
       sx={{
         height: "100vh",
         display: "flex",
+        flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
+        backgroundColor: "#F2F2F3",
+        overflowY: "scroll",
       }}
     >
-      <div className="example" style={{ height: "100%", width: "100%" }}>
+      <Container
+        disableGutters
+        maxWidth={false}
+        sx={{
+          position: "relative",
+          height: "100%",
+          width: "100%",
+        }}
+      >
         <Container
-          className="example"
           disableGutters
-          maxWidth={false}
           sx={{
-            position: "relative",
-            height: "100%",
-            overflowY: "scroll",
-            overflowX: "hidden",
-            width: "100%",
-            backgroundColor: "#EAEBED",
             padding: "20px",
-            paddingBottom: '60px',
-            marginBottom: "-56px",
+            paddingBottom: "80px",
           }}
         >
           <Box display="inline-flex" gap="15px">
@@ -138,118 +137,138 @@ function App() {
             ? questionLog.map((qVals, idx) => {
                 if (qVals.type === 0)
                   return (
-                    <div key={idx}>
-                      <Box display="inline-flex" gap="15px">
-                        <img
-                          src={botSvg}
-                          style={{ zIndex: "-1px", width: "30px" }}
-                        />
-                        <Container
-                          disableGutters
-                          sx={{
-                            backgroundColor: "#EE4342",
-                            display: "inline-flex",
-                            borderRadius: "5px",
-                            position: "relative",
-                            ":before": {
-                              content: '""',
-                              position: "absolute",
-                              width: 0,
-                              height: 0,
-                              top: "50%",
-                              left: 0,
-                              border: "10px solid transparent",
-                              borderRightColor: "#EE4342",
-                              borderLeft: 0,
-                              marginTop: "-10px",
-                              marginLeft: "-9px",
-                            },
-                          }}
+                    <Fade in={true} timeout={800} key={idx}>
+                      <div>
+                        <Box display="inline-flex" gap="15px">
+                          <img
+                            src={botSvg}
+                            style={{ zIndex: "-1px", width: "30px" }}
+                          />
+                          <Container
+                            disableGutters
+                            sx={{
+                              backgroundColor: "#EE4342",
+                              display: "inline-flex",
+                              borderRadius: "5px",
+                              position: "relative",
+                              ":before": {
+                                content: '""',
+                                position: "absolute",
+                                width: 0,
+                                height: 0,
+                                top: "50%",
+                                left: 0,
+                                border: "10px solid transparent",
+                                borderRightColor: "#EE4342",
+                                borderLeft: 0,
+                                marginTop: "-10px",
+                                marginLeft: "-9px",
+                              },
+                            }}
+                          >
+                            <Typography
+                              sx={{
+                                padding: "10px",
+                              }}
+                              color="white"
+                            >
+                              {qVals.message}
+                            </Typography>
+                          </Container>
+                        </Box>
+
+                        <br />
+                        <br />
+                      </div>
+                    </Fade>
+                  );
+                else if (qVals.type === 1)
+                  return (
+                    <Fade in={true} timeout={800} key={idx}>
+                      <div>
+                        <Box
+                          display="inline-flex"
+                          width={"100%"}
+                          justifyContent={"flex-end"}
+                          gap="10px"
                         >
                           <Typography
                             sx={{
                               padding: "10px",
+                              backgroundColor: "#A3BAC3",
+                              borderRadius: "5px",
+                              position: "relative",
+                              ":after": {
+                                content: '""',
+                                position: "absolute",
+                                width: 0,
+                                height: 0,
+                                top: "50%",
+                                right: 0,
+                                border: "10px solid transparent",
+                                borderLeftColor: "#A3BAC3",
+                                borderRight: 0,
+                                marginTop: "-10px",
+                                marginRight: "-9px",
+                              },
                             }}
                             color="white"
                           >
                             {qVals.message}
                           </Typography>
-                        </Container>
-                      </Box>
+                        </Box>
 
-                      <br />
-                      <br />
-                    </div>
-                  );
-                else if (qVals.type === 1)
-                  return (
-                    <div key={idx}>
-                      <Box
-                        display="inline-flex"
-                        width={"100%"}
-                        justifyContent={"flex-end"}
-                        gap="10px"
-                      >
-                        <Typography
-                          sx={{
-                            padding: "10px",
-                            backgroundColor: "#A3BAC3",
-                            borderRadius: "5px",
-                            position: "relative",
-                            ":after": {
-                              content: '""',
-                              position: "absolute",
-                              width: 0,
-                              height: 0,
-                              top: "50%",
-                              right: 0,
-                              border: "10px solid transparent",
-                              borderLeftColor: "#A3BAC3",
-                              borderRight: 0,
-                              marginTop: "-10px",
-                              marginRight: "-9px",
-                            },
-                          }}
-                          color="white"
-                        >
-                          {qVals.message}
-                        </Typography>
-                      </Box>
-
-                      <br />
-                      <br />
-                    </div>
+                        <br />
+                        <br />
+                      </div>
+                    </Fade>
                   );
                 return null;
               })
             : null}
         </Container>
 
-        <TextField
-          placeholder="Ask your question"
-          fullWidth
-          onKeyDown={(e: any) => (e.key === "Enter" ? askQuestion() : null)}
+        <Container
+          disableGutters
+          maxWidth="sm"
           sx={{
-            backgroundColor: "white",
-            borderWidth: "4px",
-            outline: "red",
-            "& .MuiOutlinedInput-notchedOutline": {
-              ":hover": {},
-              borderColor: "red",
-              borderWidth: "2px",
-            },
-            "& .Mui-focused": {
-              borderColor: "red",
-            },
-            "&.MuiOutlinedInput-root": {
-              borderColor: "red",
-            },
+            width: "100%",
+            backgroundColor: "#F2F2F3",
+            zIndex: "50",
+            position: "fixed",
+            bottom: 0,
+            padding: "15px",
           }}
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-            setCurrentQuestion(event.target.value);
-          }}
-        />
-      </div>
+        >
+          <TextField
+            placeholder="Ask your question here"
+            fullWidth
+            value={currentQuestion}
+            onKeyDown={(e: any) => (e.key === "Enter" ? askQuestion() : null)}
+            sx={{
+              width: "100%",
+              margin: 0,
+              "& input": {
+                backgroundColor: "white",
+              },
+              outline: "red",
+              "& .MuiOutlinedInput-notchedOutline": {
+                ":hover": {},
+                borderColor: "red",
+              },
+              "& .Mui-focused": {
+                borderColor: "red",
+              },
+              "&.MuiOutlinedInput-root": {
+                borderColor: "red",
+              },
+            }}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+              setCurrentQuestion(event.target.value);
+            }}
+          />
+        </Container>
+      </Container>
     </Container>
   );
 }
