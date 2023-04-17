@@ -15,6 +15,7 @@ def index(request):
         user_message = request.body.decode('utf-8')
         body = json.loads(user_message)
         user_message = body['message']
+        print('the user message is', user_message)
 
         messages.append({"role": "user", "content": user_message})
 
@@ -30,4 +31,4 @@ def index(request):
 
         return JsonResponse({"ai_response": ai_response})
     if request.method == "GET":
-        return JsonResponse({ "message": "Hey there, welcome to the sales assistant please fell free to ask me anything "})
+        return JsonResponse({ "message": "Hey there, welcome to the sales assistant please feel free to ask me anything! "})
