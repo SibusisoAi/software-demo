@@ -1,0 +1,12 @@
+version: '3.8'
+
+services: # this lists out all of the services / containers we wish to run and will map out our applications structure
+  backend:
+    build: ./vodcomChatBot/
+    ports:
+      # - Host port : mapping to the : Container port
+      - 8000:8000
+  frontend:
+    build: ./vodacomClient/
+    ports:
+      - 3000:3000
