@@ -1,0 +1,9 @@
+.vscode
+node_modules
+*.DS_Store
+.git
+.gitignore
+.gitattributes
+build
+README.md
+Dockerfile
