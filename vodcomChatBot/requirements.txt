@@ -1,3 +1,4 @@
+# this is a file of all the pip modules that should be installed inside the docker environment
 Django==3.2.13
 environs==7.3.1
 django-cors-headers==3.14.0
