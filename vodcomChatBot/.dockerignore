@@ -1,0 +1,17 @@
+.vscode
+node_modules
+*.DS_Store
+.git
+.gitignore
+.gitattributes
+.svelt-kit
+build
+.eslintignore
+.eslintrc.cjs
+
+.prettierrc
+.pretieriignore
+
+README.md
+
+Dockerfile
