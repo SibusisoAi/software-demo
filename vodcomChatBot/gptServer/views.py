@@ -3,7 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 import openai
 import json
 
-openai.api_key = "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"
+openai.api_key = "API_KEY"
 
 messages = [
     {"role": "system", "content": "You are an Expert Vodacom Sales AI - Deliver personalized, knowledgeable sales assistance, assess customer needs, provide tailored recommendations, foster long-term relationships, and achieve sales targets."},
@@ -27,7 +27,7 @@ messages = [
     {"role": "system", "content": "When providing pricing information, use South African Rands (ZAR) as the currency."},
     {"role": "system", "content": "Always provide brief and to-the-point responses, avoiding lengthy explanations or paragraphs."}, 
     {"role": "system", "content": "When referring to Vodacom, use 'we' to indicate your affiliation with the company and create a sense of unity and collaboration."},
-    {"role": "system", "content": "Answer as concisley as possible."}
+    {"role": "system", "content": "Answer as concisely as possible."}
 ]
 
 @csrf_exempt
