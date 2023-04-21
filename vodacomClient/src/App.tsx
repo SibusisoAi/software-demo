@@ -1,9 +1,10 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { Box, Container, Fade, TextField, Typography } from "@mui/material";
 import botSvg from "./bot.svg";
 
 function App() {
   // STATE
+  const lastMessageRef = useRef<HTMLDivElement>(null);
   const [initialResponse, setInitialResponse] = useState<string>("");
   const [currentQuestion, setCurrentQuestion] = useState<string>("");
   const [questionLog, setQuestionLog] = useState<
@@ -62,7 +63,9 @@ function App() {
     getInitialLoadData();
   }, []);
 
-  useEffect(() => {});
+  useEffect(() => {
+    if (lastMessageRef.current) lastMessageRef.current.focus();
+  }, [questionLog, lastMessageRef]);
 
   return (
     <Container
@@ -75,7 +78,7 @@ function App() {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#F2F2F3",
+        backgroundColor: "transparent" /*#F2F2F3 */,
         paddingTop: "10px",
       }}
     >
@@ -87,10 +90,9 @@ function App() {
           height: "100%",
           display: "flex",
           flexDirection: "column",
-          justifyContent: "center",
+          justifyContent: "flex-end",
           alignItems: "center",
-          backgroundColor: "#F2F2F3",
-          overflowY: "scroll",
+          backgroundColor: "transparent" /* #F2F2F3 */,
           marginTop: "10px",
         }}
       >
@@ -101,13 +103,19 @@ function App() {
             position: "relative",
             height: "100%",
             width: "100%",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "flex-end",
           }}
         >
           <Container
+            className="example"
             disableGutters
             sx={{
               padding: "0 20px",
-              paddingBottom: "80px",
+              overflowY: "scroll",
+              paddingBottom: '10px',
+              marginBottom: '80px'
             }}
           >
             <Box display="inline-flex" gap="15px">
@@ -119,6 +127,8 @@ function App() {
                   display: "inline-flex",
                   borderRadius: "5px",
                   position: "relative",
+                  boxShadow:
+                    "rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px",
                   ":before": {
                     content: '""',
                     position: "absolute",
@@ -150,10 +160,18 @@ function App() {
 
             {questionLog && questionLog.length
               ? questionLog.map((qVals, idx) => {
-                  if (qVals.type === 0)
+                  if (qVals.type === 0) {
                     return (
                       <Fade in={true} timeout={800} key={idx}>
-                        <div>
+                        <div
+                          tabIndex={1}
+                          style={{ outline: "none" }}
+                          ref={
+                            idx === questionLog.length - 1
+                              ? lastMessageRef
+                              : null
+                          }
+                        >
                           <Box display="inline-flex" gap="15px">
                             <img
                               src={botSvg}
@@ -166,6 +184,8 @@ function App() {
                                 display: "inline-flex",
                                 borderRadius: "5px",
                                 position: "relative",
+                                boxShadow:
+                                  "rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px",
                                 ":before": {
                                   content: '""',
                                   position: "absolute",
@@ -197,10 +217,18 @@ function App() {
                         </div>
                       </Fade>
                     );
-                  else if (qVals.type === 1)
+                  } else if (qVals.type === 1) {
                     return (
                       <Fade in={true} timeout={800} key={idx}>
-                        <div>
+                        <div
+                          tabIndex={1}
+                          style={{ outline: "none" }}
+                          ref={
+                            idx === questionLog.length - 1
+                              ? lastMessageRef
+                              : null
+                          }
+                        >
                           <Box
                             display="inline-flex"
                             width={"100%"}
@@ -213,6 +241,8 @@ function App() {
                                 backgroundColor: "#A3BAC3",
                                 borderRadius: "5px",
                                 position: "relative",
+                                boxShadow:
+                                  "rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px",
                                 ":after": {
                                   content: '""',
                                   position: "absolute",
@@ -238,6 +268,7 @@ function App() {
                         </div>
                       </Fade>
                     );
+                  }
                   return null;
                 })
               : null}
@@ -248,7 +279,7 @@ function App() {
             maxWidth="sm"
             sx={{
               width: "100%",
-              backgroundColor: "#F2F2F3",
+              backgroundColor: "transparent" /* #F2F2F3 */,
               zIndex: "50",
               position: "fixed",
               bottom: 0,
@@ -259,6 +290,7 @@ function App() {
               placeholder="Ask your question here"
               fullWidth
               value={currentQuestion}
+              size="small"
               onKeyDown={(e: any) => (e.key === "Enter" ? askQuestion() : null)}
               sx={{
                 width: "100%",
