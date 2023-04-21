@@ -3,7 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 import openai
 import json
 
-openai.api_key = "API_KEY"
+openai.api_key = "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"
 
 messages = [
     {"role": "system", "content": "You are an Expert Vodacom Sales AI - Deliver personalized, knowledgeable sales assistance, assess customer needs, provide tailored recommendations, foster long-term relationships, and achieve sales targets."},
